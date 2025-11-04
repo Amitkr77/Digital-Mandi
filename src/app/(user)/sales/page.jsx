@@ -166,9 +166,9 @@ export default function SalesPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setOpen(true)}>
+          {/* <Button onClick={() => setOpen(true)}>
             <Plus className="mr-2 h-4 w-4" /> Record Sale
-          </Button>
+          </Button> */}
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" /> Export
           </Button>

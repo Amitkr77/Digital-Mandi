@@ -24,10 +24,10 @@ export default function DashboardPage() {
 
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => setOpenSale(true)} size="sm">
+          {/* <Button onClick={() => setOpenSale(true)} size="sm">
             <ShoppingBag className="mr-2 h-4 w-4" />
             Record Sale
-          </Button>
+          </Button> */}
           <Button onClick={() => setOpenFarmer(true)} size="sm" variant="outline">
             <UserPlus className="mr-2 h-4 w-4" />
             Add Farmer

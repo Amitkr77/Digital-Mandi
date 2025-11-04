@@ -273,6 +273,12 @@ export default function DashboardLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
+            <Button
+              className="bg-red-600 text-white hover:bg-primary/90"
+              onClick={() => setShowSaleForm(true)}
+            >
+              <Plus className="h-4 w-4 mr-1" /> Expense
+            </Button>
             {/* New Sale Button */}
             <Button
               className="bg-primary text-primary-foreground hover:bg-primary/90"
@@ -280,10 +286,8 @@ export default function DashboardLayout({ children }) {
             >
               <Plus className="h-4 w-4 mr-1" /> New Sale
             </Button>
-
             {/* Notification Bell (Desktop: Popover, Mobile: Sheet) */}
             {isMobile ? <MobileNotificationSheet /> : <NotificationBell />}
-
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
