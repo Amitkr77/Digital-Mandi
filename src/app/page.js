@@ -1,9 +1,25 @@
-import React from 'react'
+"use client";
 
-function page() {
+import { useState } from "react";
+import Login from "@/components/auth/Login";
+import DashboardContent from "@/components/Dashboard/DashboardContent";
+
+export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
-    <div>page</div>
-  )
-}
 
-export default page
+    <>
+      <DashboardContent />
+    </>
+
+  );
+}
