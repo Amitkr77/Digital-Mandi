@@ -110,7 +110,7 @@ export default function SalesTransactionForm() {
 
   return (
     <>
-       <div className="max-w-7xl mx-auto">
+       <div className="container mx-auto ">
           {/* Header */}
           <div className="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
