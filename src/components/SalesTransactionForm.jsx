@@ -44,7 +44,7 @@ export default function SalesTransactionForm() {
   const [otherExpenses, setOtherExpenses] = useState(0);
 
   const expenseCategories = [
-    "Fair",
+    "fare",
     "Transport",
     "Labour",
     "Packaging",

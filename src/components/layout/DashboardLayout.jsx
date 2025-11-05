@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   UserPlus,
   Truck,
+  PiggyBank,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,14 +38,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import SalesTransactionForm from "../SalesTransactionForm";
+import ExpenseManagement from "../ExpenseManagement";
+import FloatingCalculator from "../FloatingCalculator";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/dashboard", active: true },
   { icon: Users, label: "Farmers", href: "/farmers" },
   { icon: Users, label: "Buyers", href: "/buyers" },
+  { icon: UserCog, label: "Staff", href: "/staff" },
+  { icon: PiggyBank, label: "Loans", href: "/loans" },
   { icon: ShoppingBag, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Reports", href: "/reports" },
-  { icon: UserCog, label: "Staff", href: "/staff" },
 ];
 
 // Sample notifications (replace with real data later)
@@ -81,6 +85,7 @@ const notifications = [
 export default function DashboardLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showSaleForm, setShowSaleForm] = useState(false);
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile (optional: use a hook like useMediaQuery)
@@ -273,9 +278,10 @@ export default function DashboardLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Expense Button */}
             <Button
               className="bg-red-600 text-white hover:bg-primary/90"
-              onClick={() => setShowSaleForm(true)}
+              onClick={() => setShowExpenseForm(true)}
             >
               <Plus className="h-4 w-4 mr-1" /> Expense
             </Button>
@@ -320,9 +326,21 @@ export default function DashboardLayout({ children }) {
               </div> */}
               <SalesTransactionForm />
             </div>
+          ) : showExpenseForm ? (
+            <div className="space-y-6">
+              {/* Optional: Add back button */}
+              {/* <div className="flex justify-end">
+                <Button variant="outline" size="sm" onClick={() => setShowExpenseForm(false)}>
+                  ← Back
+                </Button>
+              </div> */}
+              <ExpenseManagement />
+
+            </div>
           ) : (
             children
           )}
+          <FloatingCalculator />
         </main>
       </div>
     </div>
