@@ -21,6 +21,7 @@ import SalesChart from "./SalesChart";
 import CommissionDonut from "./CommissionDonut";
 import TopPerformers from "./TopPerformers";
 import RecentActivity from "./RecentActivity";
+import ExpenseMeter from "./ExpenseMeter";
 
 const DashboardContent = () => {
   const [chartRange, setChartRange] = useState("7d");
@@ -105,19 +106,25 @@ const DashboardContent = () => {
         </Card>
       </div>
 
+      <div>
+        {/* Expense Meter */}
+        <ExpenseMeter />
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Top Performers */}
-        <Card className="lg:col-span-2">
+        {/* <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Top Performers</CardTitle>
           </CardHeader>
           <CardContent>
-            <TopPerformers />
+            
           </CardContent>
-        </Card>
+        </Card> */}
+        <TopPerformers />
 
         {/* Recent Activity */}
-        <Card>
+        <Card className="lg:col-span-2">
           <CardContent>
             <RecentActivity />
           </CardContent>

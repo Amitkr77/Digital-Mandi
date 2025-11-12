@@ -181,8 +181,8 @@ const RecentActivity = () => {
         </span>
       </div>
 
-      <div className="max-h-80 overflow-hidden border rounded-lg bg-card">
-        <div className="max-h-80 overflow-y-auto p-1 space-y-1">
+      <div className="">
+        <div className="max-h-90 overflow-y-auto  space-y-1">
           {activities.map((act, index) => (
             <ActivityRow key={act.id} index={index} style={{}} />
           ))}
