@@ -1,11 +1,12 @@
 // api/auth/refresh.js
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Admin from "@/models/Admin";
-import connectDB from "@/utils/mongoDb";
+import dbConnect from "@/utils/mongoDb";
 
 export default async function handler(req, res) {
-  await connectDB();
+  await dbConnect();
+
   if (req.method !== "POST") return res.status(405).end();
 
   const refreshToken = req.cookies.refresh_token;
