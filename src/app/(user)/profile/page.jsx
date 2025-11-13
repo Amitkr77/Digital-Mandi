@@ -48,7 +48,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 py-12 px-4">
+    <div className="min-h-screen bg-linear-to-br from-green-50 via-white to-emerald-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <Card className="shadow-2xl border border-gray-200">
           <CardHeader className="text-center pb-8">

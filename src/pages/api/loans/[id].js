@@ -1,8 +1,8 @@
 // pages/api/loans/[id].js - Handles GET (single), PATCH (update), POST /repay
 import { getSession } from 'next-auth/react';
-import dbConnect from '../../../../lib/dbConnect'; // Adjust path
-import Loan from '../../../../models/Loan';
-import Farmer from '../../../../models/Farmer';
+import Loan from '@/models/Loan';
+import dbConnect from '@/utils/mongoDb';
+import Farmer from '@/models/Farmer';
 
 export default async function handler(req, res) {
     const { id } = req.query;

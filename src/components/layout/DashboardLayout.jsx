@@ -42,7 +42,6 @@ import SalesTransactionForm from "../SalesTransactionForm";
 import ExpenseManagement from "../ExpenseManagement";
 import FloatingCalculator from "../FloatingCalculator";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/dashboard", active: true },
@@ -97,7 +96,7 @@ export default function DashboardLayout({ children }) {
   const handleLogout = async () => {
     await fetch("/api/auth/logout", {
       method: "POST",
-      credentials: "include", // Important for cookies
+      credentials: "include", 
     });
 
     // Redirect to login

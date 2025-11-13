@@ -1,9 +1,9 @@
 // pages/api/loans.js - Handles GET (list) and POST (create) for loans
 import Joi from 'joi'; // npm i joi
 import { getSession } from 'next-auth/react'; // Assuming NextAuth for auth; adjust if custom
-import dbConnect from '../../../lib/dbConnect'; // Your Mongoose connection helper
-import Loan from '../../../models/Loan'; // Refined schema from before
-import Farmer from '../../../models/Farmer';
+import Loan from '@/models/Loan';
+import dbConnect from '@/utils/mongoDb';
+import Farmer from '@/models/Farmer';
 
 // Validation schema (same as before)
 const createLoanSchema = Joi.object({
