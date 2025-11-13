@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Eye, EyeOff, Lock, Mail, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,58 +28,79 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-/* ---------- Zod schema (no TS) ---------- */
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
-export default function Login({ onLogin }) {
+export default function Login({ onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "admin@example.com",
-      password: "password",
+      email: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      await onLogin(data.email, data.password);
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message || "Login failed");
+        return;
+      }
+
+      // Save to localStorage
+      localStorage.setItem("adminToken", result.token);
+      localStorage.setItem("adminName", result.admin.name);
+
+      toast.success("Login successful! Welcome back.");
+
+      // Notify parent page
+      onLoginSuccess();
+
     } catch (err) {
-      console.error("Login error:", err);
+      toast.error("Network error. Please try again.");
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-indigo-50 p-4">
-      <Card className="w-full max-w-md shadow-xl">
-        {/* ----- Header ----- */}
-        <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center ">
-            <img
-              src="/logo.png"
-              alt="Company Logo"
-              className="h-50 w-50 mx-auto rounded-lg shadow-sm"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-50 p-4">
+      <Card className="w-full max-w-md shadow-2xl border border-gray-200 rounded-2xl">
+        <CardHeader className="space-y-4 text-center">
+          <div className="flex justify-center">
+            <div className="bg-green-100 p-4 rounded-full">
+              <div className="bg-green-600 text-white font-bold text-2xl w-16 h-16 flex items-center justify-center rounded-full">
+                DM
+              </div>
+            </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-          <CardDescription className="text-base">
-            Enter your credentials to access the dashboard
+          <CardTitle className="text-2xl font-bold text-gray-800">
+            Welcome Back, Admin
+          </CardTitle>
+          <CardDescription className="text-gray-600">
+            Sign in to manage Digital Mandi
           </CardDescription>
         </CardHeader>
 
-        {/* ----- Form ----- */}
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Email */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
                 name="email"
@@ -93,7 +116,6 @@ export default function Login({ onLogin }) {
                           placeholder="admin@example.com"
                           className="pl-10"
                           disabled={isLoading}
-                          autoComplete="email"
                         />
                       </div>
                     </FormControl>
@@ -102,7 +124,6 @@ export default function Login({ onLogin }) {
                 )}
               />
 
-              {/* Password */}
               <FormField
                 control={form.control}
                 name="password"
@@ -118,19 +139,13 @@ export default function Login({ onLogin }) {
                           placeholder="••••••••"
                           className="pl-10 pr-10"
                           disabled={isLoading}
-                          autoComplete="current-password"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition"
-                          tabIndex={-1}
+                          className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                         >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
                     </FormControl>
@@ -139,10 +154,9 @@ export default function Login({ onLogin }) {
                 )}
               />
 
-              {/* Submit */}
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
                 size="lg"
                 disabled={isLoading}
               >
@@ -159,23 +173,12 @@ export default function Login({ onLogin }) {
           </Form>
         </CardContent>
 
-        {/* ----- Footer ----- */}
         <CardFooter className="flex flex-col space-y-4">
-          <div className="text-center text-sm">
-            <a href="#" className="text-blue-600 hover:underline font-medium">
-              Forgot password?
-            </a>
-          </div>
-          <p className="text-center text-xs text-gray-500 px-8">
-            By signing in, you agree to our{" "} <br />
-            <a href="#" className="underline hover:text-gray-700">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="#" className="underline hover:text-gray-700">
-              Privacy Policy
-            </a>
-            .
+          <a href="#" className="text-sm text-green-600 hover:underline">
+            Forgot password?
+          </a>
+          <p className="text-xs text-center text-gray-500">
+            Demo: <strong>admin@example.com</strong> / <strong>password</strong>
           </p>
         </CardFooter>
       </Card>

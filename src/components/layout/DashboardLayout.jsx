@@ -15,6 +15,7 @@ import {
   UserPlus,
   Truck,
   PiggyBank,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,8 @@ import { useEffect, useState } from "react";
 import SalesTransactionForm from "../SalesTransactionForm";
 import ExpenseManagement from "../ExpenseManagement";
 import FloatingCalculator from "../FloatingCalculator";
+import { useRouter } from "next/navigation";
+import { set } from "mongoose";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/dashboard", active: true },
@@ -84,12 +87,23 @@ const notifications = [
 
 export default function DashboardLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [name, setName] = useState("");
   const [showSaleForm, setShowSaleForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
 
-  // Detect mobile (optional: use a hook like useMediaQuery)
-  // For now, we use window width on mount and resize
+  // In your DashboardLayout or Logout button
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include", // Important for cookies
+    });
+
+    // Redirect to login
+    window.location.href = "/login";
+  };
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -97,7 +111,11 @@ export default function DashboardLayout({ children }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Notification Bell Component (Reusable)
+  useEffect(() => {
+    const name = localStorage.getItem("adminName");
+    setName(name || "");
+  }, []);
+  // Notification Bell Component
   const NotificationBell = () => {
     const unreadCount = notifications.length;
 
@@ -299,16 +317,24 @@ export default function DashboardLayout({ children }) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback>AD</AvatarFallback>
+                    <AvatarFallback>{name || "AD"}</AvatarFallback>
                   </Avatar>
-                  <span className="hidden sm:inline">Admin</span>
+                  <span className="hidden sm:inline">{name || "Admin"}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -318,24 +344,11 @@ export default function DashboardLayout({ children }) {
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           {showSaleForm ? (
             <div className="space-y-6">
-              {/* Optional: Add back button */}
-              {/* <div className="flex justify-end">
-                <Button variant="outline" size="sm" onClick={() => setShowSaleForm(false)}>
-                  ← Back
-                </Button>
-              </div> */}
               <SalesTransactionForm />
             </div>
           ) : showExpenseForm ? (
             <div className="space-y-6">
-              {/* Optional: Add back button */}
-              {/* <div className="flex justify-end">
-                <Button variant="outline" size="sm" onClick={() => setShowExpenseForm(false)}>
-                  ← Back
-                </Button>
-              </div> */}
               <ExpenseManagement />
-
             </div>
           ) : (
             children
