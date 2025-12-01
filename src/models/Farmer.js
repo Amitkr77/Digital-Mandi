@@ -134,5 +134,6 @@ const FarmerSchema = new Schema(
   }
 );
 
-const Farmer = mongoose.model("Farmer", FarmerSchema);
+const Farmer = mongoose.models.Farmer || mongoose.model("Farmer", FarmerSchema);
+
 export default Farmer;
