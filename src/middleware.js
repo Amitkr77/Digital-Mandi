@@ -7,8 +7,9 @@ async function verifyToken(token, secret) {
 
     try {
         const secretKey = new TextEncoder().encode(secret);
-        const { payload } = await jwtVerify(token, secretKey);
-        return payload;
+        const { payload } = await jwtVerify(token, secretKey, {
+            algorithms: ["HS256"],  // Explicitly match your signing alg
+        }); return payload;
     } catch (error) {
         console.error("JWT verification failed:", error.message);
         return null;
@@ -39,7 +40,7 @@ export async function middleware(req) {
         if (!adminToken) {
             const loginUrl = new URL("/login", req.url);
             loginUrl.searchParams.set("error", "login-required");
-            loginUrl.searchParams.set("redirect", pathname); // optional: preserve path
+            loginUrl.searchParams.set("redirect", pathname);
             return NextResponse.redirect(loginUrl);
         }
 
