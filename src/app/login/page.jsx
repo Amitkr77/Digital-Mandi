@@ -10,7 +10,7 @@ export default function LoginPage() {
   const handleSuccess = () => {
     // Optional: read ?redirect query param
     const redirect = new URLSearchParams(window.location.search).get("redirect");
-    router.push(redirect || "/");
+    router.push(redirect || "/dashboard");
   };
 
   return <Login onLoginSuccess={handleSuccess} />;

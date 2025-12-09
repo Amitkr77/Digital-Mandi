@@ -1,43 +1,3 @@
-// "use client";
-
-// // src/app/page.tsx
-// import DashboardLayout from "@/components/layout/DashboardLayout";
-// import DashboardContent from "@/components/Dashboard/DashboardContent";
-// import WelcomeScreen from "@/components/WelcomeScreen";
-// import { Loader2 } from "lucide-react";
-// import { Suspense } from "react";
-
-// export const dynamic = "force-dynamic";
-
-// export default function Home() {
-//   // Only check localStorage on server? No! We do it safely on client
-//   const hasSeenWelcome = typeof window !== "undefined" 
-//     ? localStorage.getItem("hasSeenDigitalMandiWelcome") === "true"
-//     : false;
-
-//   // If user has NEVER seen it → show welcome screen (and wait for click)
-//   // If user has seen it before → go straight to dashboard
-//   if (!hasSeenWelcome) {
-//     return <WelcomeScreen onComplete={() => window.location.reload()} />;
-//     // We reload so Next.js re-renders the page normally after welcome
-//   }
-
-//   // Normal dashboard
-//   return (
-//     <DashboardLayout>
-//       <Suspense
-//         fallback={
-//           <div className="flex h-screen items-center justify-center">
-//             <Loader2 className="h-10 w-10 animate-spin text-green-600" />
-//           </div>
-//         }
-//       >
-//         <DashboardContent />
-//       </Suspense>
-//     </DashboardLayout>
-//   );
-// }
-
 "use client";
 
 import React, { useState } from "react";
@@ -54,11 +14,10 @@ import {
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [lang, setLang] = useState("hi");
-  const router = useRouter();
+
   const content = {
     hi: {
       title: "डिजिटल मंडी",
@@ -111,13 +70,6 @@ export default function Page() {
   };
 
   const t = content[lang];
-
-
-  const handleRoleSelect = (role) => {
-    localStorage.setItem("userRole", role);
-    // Optional: track analytics, mixpanel, etc. here
-    router.push("/dashboard");
-  };
 
   return (
     <>
@@ -201,10 +153,13 @@ export default function Page() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
                           className="group cursor-pointer"
-                          onClick={() => handleRoleSelect("farmer")}
+                          onClick={() => {
+                            // Route to farmer signup/login
+                            window.location.href = "/farmer";
+                          }}
                         >
                           <div className="relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-emerald-500 transition-all duration-300 overflow-hidden">
-                            <div className="absolute inset-0 bg-linear-to-br from-emerald-100 to-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="absolute inset-0 bg-linear-to-br from-emerald-100 to-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
 
                             <div className="relative z-10 flex flex-col items-center gap-4">
                               <div className="p-5 bg-emerald-100 rounded-2xl group-hover:bg-emerald-600 transition-all duration-300">
@@ -230,7 +185,10 @@ export default function Page() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
                           className="group cursor-pointer"
-                          onClick={() => handleRoleSelect("buyer")}
+                          onClick={() => {
+                            // Route to buyer/trader dashboard
+                            window.location.href = "/buyer";
+                          }}
                         >
                           <div className="relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-amber-500 transition-all duration-300 overflow-hidden">
                             <div className="absolute inset-0 bg-linear-to-br from-amber-100 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
