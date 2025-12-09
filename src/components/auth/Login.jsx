@@ -80,7 +80,7 @@ export default function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-green-50 via-white to-emerald-50 p-4">
       <Card className="w-full max-w-md shadow-2xl border border-gray-200 rounded-2xl">
         <CardHeader className="space-y-4 text-center">
           <div className="flex justify-center">

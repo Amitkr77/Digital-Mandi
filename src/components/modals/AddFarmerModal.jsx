@@ -20,6 +20,10 @@ export default function AddFarmerModal({ open, onOpenChange }) {
             <Label>Phone</Label>
             <Input placeholder="+91 98765 43210" />
           </div>
+           <div>
+            <Label>Email</Label>
+            <Input placeholder="abc@gmail.com" />
+          </div>
           <div>
             <Label>Village</Label>
             <Input placeholder="Kheda, Gujarat" />
