@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import Admin from "@/models/Admin";
 import connectDB from "@/utils/mongoDb";
+import { cookies } from "next/headers";
+import { SignJWT } from "jose";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -50,11 +52,19 @@ export default async function handler(req, res) {
     await admin.resetLoginAttempts();
 
     // 6. Generate JWT
-    const token = jwt.sign(
-      { id: admin._id, email: admin.email, role: "admin" },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    // const token = jwt.sign(
+    //   { id: admin._id, email: admin.email, role: "admin" },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "7d" }
+    // );
+
+    // 6. Generate JWT with jose (async, Edge-safe)
+    const secretKey = new TextEncoder().encode(process.env.JWT_SECRET);  // Encode secret for jose
+    const token = await new SignJWT({ id: admin._id, email: admin.email, role: "admin" })
+      .setProtectedHeader({ alg: "HS256" })  // HS256 = HMAC with SHA-256 (matches jsonwebtoken default)
+      .setIssuedAt()
+      .setExpirationTime("7d")
+      .sign(secretKey);
 
     // 7. Set HttpOnly Cookie
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
@@ -66,6 +76,18 @@ export default async function handler(req, res) {
       "SameSite=Strict",
       process.env.NODE_ENV === "production" ? "Secure" : "",
     ].filter(Boolean).join("; "));
+
+    // At the end of login API
+  
+    // cookies().set({
+    //   name: "admintoken",
+    //   value: token,
+    //   httpOnly: true,
+    //   path: "/",
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "strict",
+    //   maxAge: 7 * 24 * 60 * 60, // 7 days
+    // });
 
     // 8. Update last login
     admin.lastLoginAt = new Date();
