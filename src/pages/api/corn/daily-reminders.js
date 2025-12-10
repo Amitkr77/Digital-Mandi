@@ -1,5 +1,5 @@
 // pages/api/cron/daily-reminders.js
-import dbConnect from '@/lib/dbConnect';
+import dbConnect from '@/utils/mongoDb';
 import Repayment from '@/models/Repayment';
 import Loan from '@/models/Loan';
 import Farmer from '@/models/Farmer';
