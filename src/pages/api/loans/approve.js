@@ -1,6 +1,6 @@
 // pages/api/loans/approve.js
-import dbConnect from '@/lib/dbConnect';
 import Loan from '@/models/Loan';
+import dbConnect from '@/utils/mongoDb';
 import Repayment from '@/models/Repayment';
 // import { getCurrentUser } from '@/lib/auth';
 import { sendNotification } from '@/services/notification';

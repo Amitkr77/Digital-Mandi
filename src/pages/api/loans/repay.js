@@ -1,5 +1,5 @@
 // pages/api/loans/repay.js
-import dbConnect from '@/lib/dbConnect';
+import dbConnect from '@/utils/mongoDb';
 import Loan from '@/models/Loan';
 import Repayment from '@/models/Repayment';
 
